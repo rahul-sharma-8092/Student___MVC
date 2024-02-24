@@ -46,16 +46,17 @@ namespace Student___MVC.Models
         [Display(Name = "Select Country: ")]
         public String Country { get; set; }
 
-        [Display(Name = "Select City: ")]
-        public string City { get; set; }
+        [Display(Name = "Select State: ")]
+        public string State { get; set; }
+
+        [Display(Name = "Select District: ")]
+        public string District { get; set; }
 
         [Display(Name = "Select Dp Image: ")]
-        [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.gif)$", ErrorMessage = "Only Image files allowed.")]
         public HttpPostedFile DpImage { get; set; }
         public string DpImageName { get; set; }
 
         [Display(Name = "Select Certificate (.pdf): ")]
-        [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.pdf)$", ErrorMessage = "Only Pdf files allowed.")]
         public HttpPostedFile Certificate { get; set; }
         public string CertificateName { get; set; }
     }

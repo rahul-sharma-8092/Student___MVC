@@ -11,97 +11,164 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+    <div class="form-horizontal">
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Country, new SelectList(ViewBag.CountryList, "Value", "Text"), "----Select Country----", new { @class = "form-control text-center" })
+                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.State, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), "----Select State----", new { @class = "form-control text-center" })
+                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.District, new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"), "----Select District----", new { @class = "form-control text-center" })
+                @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.DpImage, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.DpImage, new { type = "file", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DpImage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            @Html.LabelFor(model => model.Certificate, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Certificate, new { type = "file", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Certificate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group d-flex flex-row mb-2">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn col-md-6 btn-outline-secondary text-bg-secondary fw-bolder" >Register</button>
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.DpImage, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.DpImage, new { type = "file", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.DpImage, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Certificate, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.Certificate, new { type = "file", @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Certificate, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Register" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
     @Html.ActionLink("Back to Home", "Index", new { @class = "text-center" })
 </div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#Country").change(function () {
+            var id = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("ddlStateBind", "Student")',
+                /*url: "/Student/ddlStateBind",*/
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ id: id }),
+                dataType: "json",
+                success: function (data) {
+                    $("#State").empty();
+                    var listItem = `<option value="0">----Select State----</option>`
+                    data.map(function (item) {
+                        listItem += `<option value="${item.Value}">${item.Text}</option>`;
+                    })
+                    $("#State").html(listItem)
+                },
+                error: function (err) {
+                    $("#State").empty();
+                    $("#State").html(`<option value="0">----Select State----</option>`);
+                }
+            })
+        })
+
+        $("#State").change(function () {
+            var id = $(this).val();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ddlDistrictBind", "Student")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ id: id }),
+                    dataType: "json",
+                    success: function (data) {
+                        $("#District").attr("disabled", false)
+                    $("#District").empty();
+                    var listItem = `<option value="0">----Select District----</option>`
+                    data.map(function (item) {
+                        listItem += `<option value="${item.Value}">${item.Text}</option>`;
+                    })
+                        if (data.length == 0) {
+                            console.log("No District")
+                            $("#District").attr("disabled", true)
+                    }
+                    $("#District").html(listItem)
+                    console.log(data);
+                    },
+                    error: function (err) {
+                        $("#District").empty();
+                        $("#District").html(`<option value="0">----Select District----</option>`);
+                        console.log(err);
+                    }
+                })
+        })
+    })
+</script>

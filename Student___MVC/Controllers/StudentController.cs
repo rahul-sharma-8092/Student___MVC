@@ -1,4 +1,5 @@
-﻿using Student___MVC.DAL;
+﻿using Newtonsoft.Json;
+using Student___MVC.DAL;
 using Student___MVC.Models;
 using System;
 using System.Collections.Generic;
@@ -23,20 +24,29 @@ namespace Student___MVC.Controllers
         [HttpGet]
         public ActionResult Register()
         {
-            //ddlCountryBind();
+            ddlCountryBind();
             return View();
         }
 
         [HttpPost]
         public ActionResult Register(Student student)
         {
-            string res = studentDAL.StudentRegister(student);
-            if (Convert.ToInt32(res) > 0)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("Student", student);
+                string res = studentDAL.StudentRegister(student);
+                if (Convert.ToInt32(res) > 0)
+                {
+                    return RedirectToAction("Student", student);
+                }
+                else
+                {
+                    ddlCountryBind();
+                    return View(student);
+                }
             }
             else
             {
+                ddlCountryBind();
                 return View(student);
             }
         }
@@ -51,8 +61,8 @@ namespace Student___MVC.Controllers
             {
                 list.Add(new SelectListItem
                 {
-                    Text = item[""].ToString(),
-                    Value = item[""].ToString()
+                    Text = item["CountryName"].ToString(),
+                    Value = item["CountryId"].ToString()
                 });
             }
             ViewBag.CountryList = list;
@@ -60,22 +70,49 @@ namespace Student___MVC.Controllers
         }
         #endregion
 
-        #region ddlCityyBind
-        private void ddlCityyBind()
+        #region ddlStateBind
+        [HttpPost]
+        public string ddlStateBind(string id)
         {
-            table = studentDAL.CityDdlBind();
+            table = studentDAL.StateDdlBind(id);
 
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (DataRow item in table.Rows)
             {
                 list.Add(new SelectListItem
                 {
-                    Text = item["City"].ToString(),
-                    Value = item["CityId"].ToString()
+                    Text = item["StateName"].ToString(),
+                    Value = item["StateId"].ToString()
                 });
             }
-            ViewBag.CityList = list;
+            //ViewBag.StateList = list;
+            string jsonRes = JsonConvert.SerializeObject(list);
             table.Rows.Clear();
+
+            return jsonRes;
+        }
+        #endregion
+
+        #region ddlDistrictBind
+        [HttpPost]
+        public string ddlDistrictBind(string id)
+        {
+            table = studentDAL.DistrictDdlBind(id);
+
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (DataRow item in table.Rows)
+            {
+                list.Add(new SelectListItem
+                {
+                    Text = item["DistrictName"].ToString(),
+                    Value = item["DistrictId"].ToString()
+                });
+            }
+            //ViewBag.StateList = list;
+            string jsonRes = JsonConvert.SerializeObject(list);
+            table.Rows.Clear();
+
+            return jsonRes;
         }
         #endregion
     }
