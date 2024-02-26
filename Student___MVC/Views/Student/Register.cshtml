@@ -7,7 +7,7 @@
 
 <h2>Student Registration Form</h2>
 
-@using (Html.BeginForm("Register", "Student", FormMethod.Post))
+@using (Html.BeginForm("Register", "Student", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -41,7 +41,7 @@
         <div class="form-group d-flex flex-row mb-2">
             @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2 fw-bolder" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { type= "date", @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
             </div>
         </div>

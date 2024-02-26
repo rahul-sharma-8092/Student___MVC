@@ -11,6 +11,7 @@ namespace Student___MVC.Models
         [Key]
         public int  StuId { get; set; }
 
+        [Required]
         [Display(Name = "Name: ")]
         public string Name { get; set; }
 
@@ -53,11 +54,13 @@ namespace Student___MVC.Models
         public string District { get; set; }
 
         [Display(Name = "Select Dp Image: ")]
-        public HttpPostedFile DpImage { get; set; }
+        public HttpPostedFileBase DpImage { get; set; }
         public string DpImageName { get; set; }
 
         [Display(Name = "Select Certificate (.pdf): ")]
-        public HttpPostedFile Certificate { get; set; }
+        public HttpPostedFileBase Certificate { get; set; }
         public string CertificateName { get; set; }
+
+        public List<Student> StudentList { get; set; }
     }
 }

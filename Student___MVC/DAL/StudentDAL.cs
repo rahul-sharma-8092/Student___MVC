@@ -8,6 +8,8 @@ using System.Web;
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web.UI.WebControls.WebParts;
+using System.IO;
 
 namespace Student___MVC.DAL
 {
@@ -23,7 +25,7 @@ namespace Student___MVC.DAL
 
             try
             {
-                SqlCommand cmd = new SqlCommand("", conn);
+                SqlCommand cmd = new SqlCommand("CRUD__Student__MVC__List", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@pageIndex", 1);
@@ -90,24 +92,26 @@ namespace Student___MVC.DAL
         {
             SqlConnection conn = new SqlConnection(_connString);
             conn.Open();
-
             try
             {
-                SqlCommand cmd = new SqlCommand("", conn);
+                SqlCommand cmd = new SqlCommand("CRUD__Student__MVC", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@name", student.Name);
                 cmd.Parameters.AddWithValue("@email", student.Email);
-                cmd.Parameters.AddWithValue("@password", student.Password);
-                cmd.Parameters.AddWithValue("@birthDate", student.BirthDate);
+                cmd.Parameters.AddWithValue("@password", Encryption(student.Password));
+                if (student.BirthDate.Year > 1800)
+                {
+                    cmd.Parameters.AddWithValue("@birthDate", student.BirthDate);
+                }
                 cmd.Parameters.AddWithValue("@mobile", student.Mobile);
                 cmd.Parameters.AddWithValue("@address", student.Address);
                 cmd.Parameters.AddWithValue("@country", student.Country);
                 cmd.Parameters.AddWithValue("@state", student.State);
                 cmd.Parameters.AddWithValue("@district", student.District);
-                cmd.Parameters.AddWithValue("@dpImage", student.DpImageName);
-                cmd.Parameters.AddWithValue("@certificate", student.CertificateName);
-                cmd.Parameters.AddWithValue("@query", 1);
+                cmd.Parameters.AddWithValue("@dpImage", ImageSave(student.DpImage));
+                cmd.Parameters.AddWithValue("@certificate", DocumentSave(student.Certificate));
+                cmd.Parameters.AddWithValue("@query", 3);
 
                 string result = cmd.ExecuteNonQuery().ToString();
 
@@ -115,7 +119,7 @@ namespace Student___MVC.DAL
             }
             catch (Exception Ex)
             {
-                return Ex.Message;
+                return null;
             }
             finally
             {
@@ -145,8 +149,8 @@ namespace Student___MVC.DAL
                 cmd.Parameters.AddWithValue("@country", student.Country);
                 cmd.Parameters.AddWithValue("@state", student.State);
                 cmd.Parameters.AddWithValue("@district", student.District);
-                cmd.Parameters.AddWithValue("@dpImage", student.DpImageName);
-                cmd.Parameters.AddWithValue("@certificate", student.CertificateName);
+                cmd.Parameters.AddWithValue("@dpImage", ImageSave(student.DpImage));
+                cmd.Parameters.AddWithValue("@certificate", DocumentSave(student.Certificate));
                 cmd.Parameters.AddWithValue("@query", 2);
 
                 string result = cmd.ExecuteNonQuery().ToString();
@@ -300,18 +304,133 @@ namespace Student___MVC.DAL
         #endregion
 
         #region String Encryption
-        //public string Encryption(string data)
-        //{
-        //    MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-        //    TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();
-        //    Encoding encoding = Encoding.UTF8;
+        public string Encryption(string text)
+        {
+            if (text == null)
+            {
+                return null;
+            }
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();
+            Encoding encoding = Encoding.UTF8;
 
-        //    string secretKey = "Rahul$$1234";
+            string secretKey = "Rahul$$1234";
 
-        //    byte[] data = Encoding.UTF8.Convert.FromBase64String(data);
+            byte[] data = encoding.GetBytes(text);
 
-        //    tripleDES.Key = md5.ComputeHash(Encoding.UTF8.GetBytes(secretKey));
-        //}
+            tripleDES.Key = md5.ComputeHash(encoding.GetBytes(secretKey));
+            tripleDES.Mode = CipherMode.ECB;
+
+            ICryptoTransform transform = tripleDES.CreateEncryptor();
+            try
+            {
+                byte[] result = transform.TransformFinalBlock(data, 0, data.Length);
+
+                return Convert.ToBase64String(result);
+            }
+            finally
+            {
+                md5.Clear();
+                tripleDES.Clear();
+            }
+        }
+        #endregion
+
+        #region String Decryption
+        public string Decryption(string text)
+        {
+            if (text == null || text == "")
+            {
+                return "";
+            }
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();
+            Encoding encoding = Encoding.UTF8;
+
+            string secretKey = "Rahul$$1234";
+
+            byte[] dataToDecrypt = Convert.FromBase64String(text);
+
+            tripleDES.Key = md5.ComputeHash(encoding.GetBytes(secretKey));
+            tripleDES.Mode = CipherMode.ECB;
+
+            ICryptoTransform transform = tripleDES.CreateDecryptor();
+            try
+            {
+                byte[] result = transform.TransformFinalBlock(dataToDecrypt, 0, dataToDecrypt.Length);
+
+                return encoding.GetString(result);
+            }
+            finally
+            {
+                md5.Clear();
+                tripleDES.Clear();
+            }
+        }
+        #endregion
+
+        #region ImageSave
+        private string ImageSave(HttpPostedFileBase file)
+        {
+            if (file != null)
+            {
+                string fileName = file.FileName;
+                string path = HttpContext.Current.Server.MapPath("~/Docs/Images");
+
+                string fileExtension = Path.GetExtension(fileName);
+                try
+                {
+                    Random random = new Random();
+                    fileName = "IMG" + random.Next() + fileExtension;
+
+                    string fullPath = Path.Combine(path, fileName);
+                    file.SaveAs(fullPath);
+
+                    return fileName;
+                }
+                catch (Exception)
+                {
+
+                    return "";
+                }
+            }
+            else
+            {
+                return "";
+            }
+        }
+        #endregion
+
+        #region DocumentSave
+        private string DocumentSave(HttpPostedFileBase file)
+        {
+            if (file != null)
+            {
+                string fileName = file.FileName;
+                string path = HttpContext.Current.Server.MapPath("~/Docs/Document");
+
+                string fileExtension = Path.GetExtension(fileName);
+                try
+                {
+                    Random random = new Random();
+                    fileName = "DOC" + random.Next() + fileExtension;
+
+                    string fullPath = Path.Combine(path, fileName);
+                    file.SaveAs(fullPath);
+
+                    return fileName;
+                }
+                catch (Exception)
+                {
+
+                    return "";
+                }
+            }
+            else
+            {
+                return "";
+            }
+        }
         #endregion
     }
 }
